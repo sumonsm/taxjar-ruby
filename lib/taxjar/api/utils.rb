@@ -5,7 +5,7 @@ module Taxjar
     module Utils
       def perform_request(request_method, path, object_key, options = {})
         # DEBUG -----------------------------
-        File.open('/tmp/taxjar_api.log', 'a') {|f| f.write("[#{Time.current}] #{request_method} -> #{path} -> #{object_key} -> #{options.inspect} --- #{caller_locations}\n") }
+        File.open('/tmp/taxjar_api.log', 'a') {|f| f.write("[#{Time.current}] #{request_method} -> #{path} -> #{object_key} -> #{options.inspect} --- #{ caller_locations.select{|l| l.to_s =~ /\/var\/www\/|\/rails-api\/|rails_admin/}.map{|l| l.to_s =~ /rails_admin/ ? 'rails_admin' : l}.uniq }\n") }
         # DEBUG -----------------------------
         Taxjar::API::Request.new(self, request_method, path, object_key, options).perform
       end
